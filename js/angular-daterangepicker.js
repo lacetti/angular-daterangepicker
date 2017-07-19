@@ -132,11 +132,15 @@
           var eventType, results;
           el.daterangepicker(angular.extend(opts, {
             autoUpdateInput: false
-          }), function(start, end) {
+          }));
+          el.on('apply.daterangepicker', function(ev, picker) {
             return $scope.$apply(function() {
-              return $scope.model = opts.singleDatePicker ? start : {
-                startDate: start,
-                endDate: end
+              var newEndDate, newStartDate;
+              newStartDate = picker.startDate;
+              newEndDate = picker.endDate;
+              return $scope.model = opts.singleDatePicker ? newStartDate : {
+                startDate: newStartDate,
+                endDate: newEndDate
               };
             });
           });
@@ -152,12 +156,12 @@
           return results;
         };
         _init();
-        $scope.$watch('model.startDate', (function(n) {
+        $scope.$watch('model.startDate', function(n) {
           return _setStartDate(n);
-        }), true);
-        $scope.$watch('model.endDate', (function(n) {
+        });
+        $scope.$watch('model.endDate', function(n) {
           return _setEndDate(n);
-        }), true);
+        });
         _initBoundaryField = function(field, validator, modelField, optName) {
           if (attrs[field]) {
             modelCtrl.$validators[field] = function(value) {
