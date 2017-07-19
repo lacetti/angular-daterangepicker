@@ -131,16 +131,12 @@
         _init = function() {
           var eventType, results;
           el.daterangepicker(angular.extend(opts, {
-            autoUpdateInput: false
-          }));
-          el.on('apply.daterangepicker', function(ev, picker) {
+            autoUpdateInput: true
+          }), function(start, end) {
             return $scope.$apply(function() {
-              var newEndDate, newStartDate;
-              newStartDate = picker.startDate;
-              newEndDate = picker.endDate;
-              return $scope.model = opts.singleDatePicker ? newStartDate : {
-                startDate: newStartDate,
-                endDate: newEndDate
+              return $scope.model = opts.singleDatePicker ? start : {
+                startDate: start,
+                endDate: end
               };
             });
           });
